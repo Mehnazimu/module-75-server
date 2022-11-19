@@ -127,7 +127,7 @@ async function run() {
             const query = {email}
             const user = await usersCollection.findOne(query);
             res.send({isAdmin: user?.role === 'admin'});
-        })
+        });
 
         app.put('/users/admin/:id',verifyJWT, async(req,res)=>{
             const decodedEmail = req.decoded.email;
@@ -147,6 +147,12 @@ async function run() {
             }
             const result = await usersCollection.updateOne(filter, updatedDoc,options)
             res.send(result)
+        });
+
+        app.get('/appointmentSpecialty', async(req,res)=>{
+            const query ={}
+            const result = await appointmentOptionCollection.find(query).project({name: 1}).toArray();
+            res.send(result);
         })
 
         // /**
